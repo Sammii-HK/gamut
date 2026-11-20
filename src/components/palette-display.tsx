@@ -9,7 +9,7 @@ interface PaletteDisplayProps {
 
 export function PaletteDisplay({ palette }: PaletteDisplayProps) {
   return (
-    <div className="space-y-3">
+    <section id="palette" className="space-y-3 scroll-mt-6">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-medium text-neutral-300">Palette</h2>
         <span className="text-xs text-neutral-500 font-mono">
@@ -17,7 +17,7 @@ export function PaletteDisplay({ palette }: PaletteDisplayProps) {
         </span>
       </div>
 
-      <div className="grid grid-cols-4 sm:grid-cols-6 xl:grid-cols-11 gap-2">
+      <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-11 gap-2">
         {palette.steps.map((step) => (
           <div key={step.step} className="flex flex-col items-center gap-1.5">
             <div
@@ -37,6 +37,6 @@ export function PaletteDisplay({ palette }: PaletteDisplayProps) {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

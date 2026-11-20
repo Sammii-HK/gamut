@@ -10,7 +10,7 @@ import { ScalesList } from "@/components/scales-list";
 import { generatePalette } from "@/lib/palette";
 import { defaultTokens } from "@/lib/tokens";
 import { decodeState, updateUrl } from "@/lib/url";
-import { Share2, Palette } from "lucide-react";
+import { Share2, Palette, ChevronDown } from "lucide-react";
 import type { PreviewMode, Scale, ScaleRole } from "@/types";
 
 const DEFAULT_SCALES: Scale[] = [
@@ -139,6 +139,20 @@ export default function Home() {
           </button>
         </div>
 
+        <nav
+          aria-label="Workspace sections"
+          className="flex flex-wrap gap-x-6 border-y border-neutral-800 mb-8 text-xs text-neutral-400"
+        >
+          {["scales", "palette", "preview", "export"].map((section) => (
+            <a
+              key={section}
+              href={`#${section}`}
+              className="min-h-11 inline-flex items-center capitalize hover:text-white"
+            >
+              {section}
+            </a>
+          ))}
+        </nav>
         {shareError && (
           <p role="alert" className="text-sm text-rose-300 mb-6">
             {shareError}
@@ -165,7 +179,13 @@ export default function Home() {
               onRoleChange={handleRoleChange}
             />
 
-            <ContrastGrid palette={activePalette} />
+            <details className="contrast-details border-t border-neutral-800 pt-3">
+              <summary className="flex min-h-11 items-center justify-between text-xs text-neutral-400 cursor-pointer">
+                Check contrast ratios
+                <ChevronDown size={15} aria-hidden />
+              </summary>
+              <ContrastGrid palette={activePalette} />
+            </details>
           </aside>
 
           {/* Main content */}

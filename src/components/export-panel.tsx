@@ -28,7 +28,7 @@ export function ExportPanel({ palettes, tokens, mode }: ExportPanelProps) {
   const output = exportTheme(palettes, tokens, mode, format);
 
   return (
-    <div className="space-y-3">
+    <section id="export" className="space-y-3 scroll-mt-6">
       <div className="flex items-start justify-between flex-wrap gap-3">
         <h2 className="text-sm font-medium text-neutral-300">Export</h2>
         <div className="flex flex-wrap gap-1 bg-neutral-800/50 rounded-lg p-1">
@@ -61,6 +61,6 @@ export function ExportPanel({ palettes, tokens, mode }: ExportPanelProps) {
           <CopyButton text={output} />
         </div>
       </div>
-    </div>
+    </section>
   );
 }

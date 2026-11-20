@@ -34,7 +34,7 @@ export function PreviewPanel({
   }
 
   return (
-    <div className="space-y-3">
+    <section id="preview" className="space-y-3 scroll-mt-6">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-medium text-neutral-300">Preview</h2>
         <ModeToggle mode={mode} onChange={onModeChange} />
@@ -54,6 +54,6 @@ export function PreviewPanel({
         <InputPreview />
         <CardPreview />
       </div>
-    </div>
+    </section>
   );
 }

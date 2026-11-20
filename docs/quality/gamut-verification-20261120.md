@@ -23,7 +23,23 @@ Gamut remains an OKLCH theme workshop. This work does not turn it into Saer or c
 
 ## Browser evidence
 
-Pending exclusive browser handoff from the parent. No browser screenshot or interaction claim is made yet.
+Production build served at `http://127.0.0.1:4814`. Fresh agent-owned tabs; the parent’s Glint tab was untouched.
+
+- Set the visible Hex input to `#8544cc`, then renamed primary to Orchid and neutral to Slate. The Primary preview button stayed `rgb(137, 73, 209)` with text `rgb(247, 243, 255)` before and after both renames. CSS and dark JSON exports retained `--primary-solid: #8949d1`; no grey fallback appeared.
+- Added another scale, renamed it Orchid too and assigned Accent. JSON exposed separate orchid and orchid-2 keys, with accent `#d18500`. Reload retained all three names, stable IDs, roles, the active added scale and dark mode.
+- The preview notification switch changed checked state using Space. The Disabled example is exposed as disabled.
+- Desktop viewport 1144px: no horizontal overflow, and all visible buttons/text fields/selects measured at least 44px high. The first browser view exposed oversized two-row swatches, so the final build uses an 11-column desktop scale and provides direct Scales, Palette, Preview and Export links.
+- Phone viewport 390px: document width 384px (the remaining 6px is the vertical scrollbar), no horizontal overflow. The Preview link placed its section at 24px from the top. Visible controls and section links measured at least 44px high. Contrast checks expand on demand.
+- Export copy showed Copied after the browser resolved its clipboard write. The automation clipboard reader returned an empty value, so actual clipboard content was not independently verified. Clipboard denial handling was reviewed in source, not induced through browser permissions.
+- Viewport override reset, confirmed back at 1144px, before handing browser ownership to the Flip agent.
+
+Actual local, unreleased screenshots, kept outside the code commit in `.codex-artifacts`:
+
+- `gamut-desktop-editor.jpg`: final desktop editor with renamed purple primary, neutral and duplicate named amber accent.
+- `gamut-phone-preview.jpg`: actual 390px preview with purple primary and amber accent.
+- `gamut-phone-scales.jpg`: actual 390px scale controls with contrast checks expanded.
+
+These are local tool states, not deployed screenshots.
 
 ## Remaining limits
 

@@ -58,3 +58,7 @@ section {
     animation-duration: 0.01ms !important;
   }
 }
+
+.contrast-details[open] summary svg {
+  transform: rotate(180deg);
+}
