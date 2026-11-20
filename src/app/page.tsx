@@ -1,34 +1,30 @@
-'use client';
+"use client";
 
-import { useState, useMemo, useEffect, useCallback } from 'react';
-import { ColourPicker } from '@/components/colour-picker';
-import { PaletteDisplay } from '@/components/palette-display';
-import { ContrastGrid } from '@/components/contrast-grid';
-import { PreviewPanel } from '@/components/preview-panel';
-import { ExportPanel } from '@/components/export-panel';
-import { ScalesList } from '@/components/scales-list';
-import { generatePalette } from '@/lib/palette';
-import { defaultTokens } from '@/lib/tokens';
-import { decodeState, updateUrl } from '@/lib/url';
-import { Share2 } from 'lucide-react';
-import type { PreviewMode, Scale, ScaleRole } from '@/types';
+import { useState, useMemo, useEffect, useCallback } from "react";
+import { ColourPicker } from "@/components/colour-picker";
+import { PaletteDisplay } from "@/components/palette-display";
+import { ContrastGrid } from "@/components/contrast-grid";
+import { PreviewPanel } from "@/components/preview-panel";
+import { ExportPanel } from "@/components/export-panel";
+import { ScalesList } from "@/components/scales-list";
+import { generatePalette } from "@/lib/palette";
+import { defaultTokens } from "@/lib/tokens";
+import { decodeState, updateUrl } from "@/lib/url";
+import { Share2, Palette } from "lucide-react";
+import type { PreviewMode, Scale, ScaleRole } from "@/types";
 
 const DEFAULT_SCALES: Scale[] = [
-  { id: 'primary', name: 'primary', baseHex: '#3b82f6', role: 'primary' },
-  { id: 'neutral', name: 'neutral', baseHex: '#737373', role: 'neutral' },
+  { id: "primary", name: "primary", baseHex: "#3b82f6", role: "primary" },
+  { id: "neutral", name: "neutral", baseHex: "#737373", role: "neutral" },
 ];
-
-let idCounter = 0;
-function nextId() {
-  return `scale-${++idCounter}`;
-}
 
 export default function Home() {
   const [scales, setScales] = useState<Scale[]>(DEFAULT_SCALES);
-  const [activeScaleId, setActiveScaleId] = useState('primary');
-  const [previewMode, setPreviewMode] = useState<PreviewMode>('light');
+  const [activeScaleId, setActiveScaleId] = useState("primary");
+  const [previewMode, setPreviewMode] = useState<PreviewMode>("light");
   const [mounted, setMounted] = useState(false);
   const [shared, setShared] = useState(false);
+  const [shareError, setShareError] = useState("");
 
   // Read URL params on mount
   useEffect(() => {
@@ -49,81 +45,115 @@ export default function Home() {
 
   // Generate all palettes
   const palettes = useMemo(
-    () => scales.map((s) => generatePalette(s.baseHex, s.name)),
-    [scales]
+    () => scales.map((s) => generatePalette(s.baseHex, s.name, s.id)),
+    [scales],
   );
 
-  const activePalette = palettes.find((p) => p.name === activeScale.name) ?? palettes[0];
+  const activePalette =
+    palettes.find((p) => p.id === activeScale.id) ?? palettes[0];
 
   // Semantic tokens derived from scale roles
   const tokens = useMemo(() => defaultTokens(scales), [scales]);
 
-  const handleColourChange = useCallback((hex: string) => {
-    setScales((prev) =>
-      prev.map((s) => (s.id === activeScaleId ? { ...s, baseHex: hex } : s))
-    );
-  }, [activeScaleId]);
+  const handleColourChange = useCallback(
+    (hex: string) => {
+      setScales((prev) =>
+        prev.map((s) => (s.id === activeScaleId ? { ...s, baseHex: hex } : s)),
+      );
+    },
+    [activeScaleId],
+  );
 
   const handleAddScale = useCallback(() => {
-    const colours = ['#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4'];
+    const colours = [
+      "#ef4444",
+      "#10b981",
+      "#f59e0b",
+      "#8b5cf6",
+      "#ec4899",
+      "#06b6d4",
+    ];
     const hex = colours[scales.length % colours.length];
-    const id = nextId();
+    const id = crypto.randomUUID();
     const name = `scale-${scales.length + 1}`;
-    setScales((prev) => [...prev, { id, name, baseHex: hex, role: 'custom' }]);
+    setScales((prev) => [...prev, { id, name, baseHex: hex, role: "custom" }]);
     setActiveScaleId(id);
   }, [scales.length]);
 
-  const handleRemoveScale = useCallback((id: string) => {
-    setScales((prev) => {
-      const next = prev.filter((s) => s.id !== id);
-      if (activeScaleId === id && next.length > 0) {
-        setActiveScaleId(next[0].id);
-      }
-      return next;
-    });
-  }, [activeScaleId]);
+  const handleRemoveScale = useCallback(
+    (id: string) => {
+      setScales((prev) => {
+        const next = prev.filter((s) => s.id !== id);
+        if (activeScaleId === id && next.length > 0) {
+          setActiveScaleId(next[0].id);
+        }
+        return next;
+      });
+    },
+    [activeScaleId],
+  );
 
   const handleRenameScale = useCallback((id: string, name: string) => {
-    setScales((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, name: name || s.id } : s))
-    );
+    setScales((prev) => prev.map((s) => (s.id === id ? { ...s, name } : s)));
   }, []);
 
   const handleRoleChange = useCallback((id: string, role: ScaleRole) => {
-    setScales((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, role } : s))
-    );
+    setScales((prev) => prev.map((s) => (s.id === id ? { ...s, role } : s)));
   }, []);
 
   const handleShare = async () => {
-    await navigator.clipboard.writeText(window.location.href);
-    setShared(true);
-    setTimeout(() => setShared(false), 2000);
+    setShareError("");
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setShared(true);
+      setTimeout(() => setShared(false), 2000);
+    } catch {
+      setShareError(
+        "Sharing could not copy the link. Copy the address from your browser instead.",
+      );
+    }
   };
 
   return (
     <main className="min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-8 sm:py-12">
-        <div className="flex items-center justify-between mb-10">
+        <div className="flex items-start justify-between gap-5 mb-10">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Gamut</h1>
+            <p className="text-[10px] uppercase tracking-[.25em] text-neutral-500 mb-3">
+              The colour workshop
+            </p>
+            <h1 className="text-4xl font-semibold tracking-tight flex items-center gap-3">
+              <Palette size={30} aria-hidden />
+              Gamut
+            </h1>
             <p className="text-sm text-neutral-400 mt-1">
-              OKLCH theme builder with contrast checking
+              Shape a palette. Try it in context. Take the tokens with you.
             </p>
           </div>
           <button
             onClick={handleShare}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-800 border border-neutral-700 text-xs text-neutral-300 hover:bg-neutral-700 transition-colors"
           >
-            <Share2 size={12} />
-            {shared ? 'Copied!' : 'Share'}
+            <Share2 size={15} aria-hidden />
+            {shared ? "Copied!" : "Share"}
           </button>
         </div>
 
+        {shareError && (
+          <p role="alert" className="text-sm text-rose-300 mb-6">
+            {shareError}
+          </p>
+        )}
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
           {/* Sidebar */}
-          <div className="space-y-6">
-            <ColourPicker value={activeScale.baseHex} onChange={handleColourChange} />
+          <aside
+            className="space-y-6 rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4 h-fit"
+            aria-label="Palette controls"
+          >
+            <ColourPicker
+              value={activeScale.baseHex}
+              onChange={handleColourChange}
+            />
 
             <ScalesList
               scales={scales}
@@ -136,10 +166,10 @@ export default function Home() {
             />
 
             <ContrastGrid palette={activePalette} />
-          </div>
+          </aside>
 
           {/* Main content */}
-          <div className="space-y-8">
+          <div className="space-y-8 min-w-0">
             <PaletteDisplay palette={activePalette} />
             <PreviewPanel
               palettes={palettes}
@@ -156,7 +186,8 @@ export default function Home() {
         </div>
 
         <footer className="mt-16 pt-6 border-t border-neutral-800 text-center text-xs text-neutral-500">
-          Built with OKLCH colour science. No dependencies.
+          OKLCH scales, WCAG contrast ratios and portable theme tokens. All
+          editing stays in your browser.
         </footer>
       </div>
     </main>

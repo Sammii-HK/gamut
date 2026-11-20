@@ -1,60 +1,84 @@
-import type { PreviewMode, Scale } from '@/types';
-
+import type { PreviewMode, Scale } from "@/types";
 interface UrlState {
   scales: Scale[];
   activeScaleId: string;
   mode: PreviewMode;
 }
+const roles = new Set(["primary", "secondary", "accent", "neutral", "custom"]);
+const colour = (value: unknown): value is string =>
+  typeof value === "string" && /^#[a-f\d]{6}$/i.test(value);
+const mode = (value: unknown): PreviewMode =>
+  value === "dark" ? "dark" : "light";
 
-// Format: ?scales=primary:3b82f6:primary,neutral:737373:neutral&active=primary&mode=dark
+/** Version two preserves IDs and names separately; punctuation cannot split a scale. */
 export function encodeState(state: UrlState): string {
   const params = new URLSearchParams();
-  const scalesStr = state.scales
-    .map((s) => `${s.name}:${s.baseHex.replace('#', '')}:${s.role}`)
-    .join(',');
-  params.set('scales', scalesStr);
-  if (state.activeScaleId) params.set('active', state.activeScaleId);
-  if (state.mode === 'dark') params.set('mode', 'dark');
-  return `?${params.toString()}`;
+  params.set("v", "2");
+  params.set("scales", JSON.stringify(state.scales));
+  params.set("active", state.activeScaleId);
+  params.set("mode", state.mode);
+  return `?${params}`;
 }
-
-export function decodeState(): Partial<UrlState> {
-  if (typeof window === 'undefined') return {};
-  const params = new URLSearchParams(window.location.search);
-
-  // Support legacy single-colour URL: ?base=3b82f6
-  const legacyBase = params.get('base');
-  if (legacyBase) {
-    const name = params.get('name') ?? 'primary';
-    return {
-      scales: [{ id: name, name, baseHex: `#${legacyBase}`, role: 'primary' }],
-      activeScaleId: name,
-      mode: (params.get('mode') as PreviewMode) ?? undefined,
-    };
+export function decodeQuery(query: string): Partial<UrlState> {
+  const params = new URLSearchParams(query);
+  let candidates: unknown;
+  if (params.get("v") === "2") {
+    try {
+      candidates = JSON.parse(params.get("scales") ?? "null");
+    } catch {
+      return {};
+    }
+  } else if (params.has("base")) {
+    const name = params.get("name") || "primary";
+    candidates = [
+      { id: name, name, baseHex: `#${params.get("base")}`, role: "primary" },
+    ];
+  } else {
+    const raw = params.get("scales");
+    if (!raw) return {};
+    candidates = raw.split(",").map((entry) => {
+      const [name, hex, role] = entry.split(":");
+      return { id: name, name, baseHex: `#${hex}`, role: role || "custom" };
+    });
   }
-
-  const scalesStr = params.get('scales');
-  if (!scalesStr) return {};
-
-  const scales: Scale[] = scalesStr.split(',').map((entry) => {
-    const [name, hex, role] = entry.split(':');
-    return {
-      id: name,
-      name,
-      baseHex: `#${hex}`,
-      role: (role ?? 'custom') as Scale['role'],
-    };
-  });
-
+  if (
+    !Array.isArray(candidates) ||
+    !candidates.length ||
+    candidates.length > 64
+  )
+    return {};
+  const ids = new Set<string>();
+  const scales: Scale[] = [];
+  for (const entry of candidates) {
+    if (!entry || typeof entry !== "object") return {};
+    const { id, name, baseHex, role } = entry;
+    if (
+      typeof id !== "string" ||
+      !id ||
+      id.length > 100 ||
+      ids.has(id) ||
+      typeof name !== "string" ||
+      name.length > 100 ||
+      !colour(baseHex) ||
+      !roles.has(role)
+    )
+      return {};
+    ids.add(id);
+    scales.push({ id, name, baseHex, role });
+  }
+  const active = params.get("active");
   return {
     scales,
-    activeScaleId: params.get('active') ?? scales[0]?.id,
-    mode: (params.get('mode') as PreviewMode) ?? undefined,
+    activeScaleId: active && ids.has(active) ? active : scales[0].id,
+    mode: mode(params.get("mode")),
   };
 }
-
+export function decodeState(): Partial<UrlState> {
+  return typeof window === "undefined"
+    ? {}
+    : decodeQuery(window.location.search);
+}
 export function updateUrl(state: UrlState): void {
-  if (typeof window === 'undefined') return;
-  const url = encodeState(state);
-  window.history.replaceState(null, '', url);
+  if (typeof window !== "undefined")
+    window.history.replaceState(null, "", encodeState(state));
 }

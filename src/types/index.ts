@@ -12,6 +12,7 @@ export interface ColourStep {
 }
 
 export interface Palette {
+  id: string; // Stable identity, independent of its editable display name
   name: string;
   baseHex: string;
   baseOklch: OklchColour;

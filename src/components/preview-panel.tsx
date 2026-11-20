@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import type { Palette, PreviewMode, SemanticTokens } from '@/types';
-import { resolveAllTokens } from '@/lib/tokens';
-import { ModeToggle } from './mode-toggle';
-import { ButtonPreview } from './preview/button-preview';
-import { CardPreview } from './preview/card-preview';
-import { InputPreview } from './preview/input-preview';
-import { TypographyPreview } from './preview/typography-preview';
+import type { Palette, PreviewMode, SemanticTokens } from "@/types";
+import { resolveAllTokens, buildPaletteMap, paletteNames } from "@/lib/tokens";
+import { ModeToggle } from "./mode-toggle";
+import { ButtonPreview } from "./preview/button-preview";
+import { CardPreview } from "./preview/card-preview";
+import { InputPreview } from "./preview/input-preview";
+import { TypographyPreview } from "./preview/typography-preview";
 
 interface PreviewPanelProps {
   palettes: Palette[];
@@ -15,17 +15,13 @@ interface PreviewPanelProps {
   onModeChange: (mode: PreviewMode) => void;
 }
 
-export function PreviewPanel({ palettes, tokens, mode, onModeChange }: PreviewPanelProps) {
-  // Build palette lookup map
-  const paletteMap = new Map<string, Map<number, string>>();
-  for (const p of palettes) {
-    const stepMap = new Map<number, string>();
-    for (const s of p.steps) {
-      stepMap.set(s.step, s.hex);
-    }
-    paletteMap.set(p.name, stepMap);
-  }
-
+export function PreviewPanel({
+  palettes,
+  tokens,
+  mode,
+  onModeChange,
+}: PreviewPanelProps) {
+  const paletteMap = buildPaletteMap(palettes);
   // Resolve semantic tokens for current mode
   const resolved = resolveAllTokens(tokens, paletteMap, mode);
 
@@ -33,7 +29,7 @@ export function PreviewPanel({ palettes, tokens, mode, onModeChange }: PreviewPa
   const scaleVars: Record<string, string> = {};
   for (const p of palettes) {
     for (const s of p.steps) {
-      scaleVars[`--${p.name}-${s.step}`] = s.hex;
+      scaleVars[`--${paletteNames(palettes).get(p.id)}-${s.step}`] = s.hex;
     }
   }
 
@@ -49,8 +45,8 @@ export function PreviewPanel({ palettes, tokens, mode, onModeChange }: PreviewPa
         style={{
           ...scaleVars,
           ...resolved,
-          backgroundColor: resolved['--background'],
-          color: resolved['--text-primary'],
+          backgroundColor: resolved["--background"],
+          color: resolved["--text-primary"],
         }}
       >
         <TypographyPreview />

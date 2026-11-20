@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
-import type { Palette } from '@/types';
-import { contrastRatio, wcagLevel } from '@/lib/colour';
+import { X } from "lucide-react";
+import type { Palette } from "@/types";
+import { contrastRatio, wcagLevel } from "@/lib/colour";
 
 interface ContrastGridProps {
   palette: Palette;
 }
 
 export function ContrastGrid({ palette }: ContrastGridProps) {
-  const backgrounds = ['#ffffff', '#000000'];
+  const backgrounds = ["#ffffff", "#000000"];
 
   return (
     <div className="space-y-3">
@@ -18,9 +19,15 @@ export function ContrastGrid({ palette }: ContrastGridProps) {
         <table className="w-full text-xs">
           <thead>
             <tr className="border-b border-neutral-800">
-              <th className="text-left py-2 pr-3 text-neutral-500 font-medium">Step</th>
-              <th className="py-2 px-3 text-neutral-500 font-medium">vs white</th>
-              <th className="py-2 px-3 text-neutral-500 font-medium">vs black</th>
+              <th className="text-left py-2 pr-3 text-neutral-500 font-medium">
+                Step
+              </th>
+              <th className="py-2 px-3 text-neutral-500 font-medium">
+                vs white
+              </th>
+              <th className="py-2 px-3 text-neutral-500 font-medium">
+                vs black
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -38,7 +45,9 @@ export function ContrastGrid({ palette }: ContrastGridProps) {
                         className="w-4 h-4 rounded-sm flex-shrink-0"
                         style={{ backgroundColor: step.hex }}
                       />
-                      <span className="text-neutral-400 font-mono">{step.step}</span>
+                      <span className="text-neutral-400 font-mono">
+                        {step.step}
+                      </span>
                     </div>
                   </td>
                   <td className="py-1.5 px-3 text-center">
@@ -59,9 +68,9 @@ export function ContrastGrid({ palette }: ContrastGridProps) {
 
 function ContrastBadge({ ratio, level }: { ratio: number; level: string }) {
   const colours = {
-    AAA: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-    AA: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-    fail: 'bg-red-500/10 text-red-400/60 border-red-500/20',
+    AAA: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+    AA: "bg-amber-500/15 text-amber-400 border-amber-500/30",
+    fail: "bg-red-500/10 text-red-400/60 border-red-500/20",
   };
 
   return (
@@ -69,7 +78,16 @@ function ContrastBadge({ ratio, level }: { ratio: number; level: string }) {
       className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-medium border ${colours[level as keyof typeof colours]}`}
     >
       <span>{ratio.toFixed(1)}</span>
-      <span className="font-semibold">{level === 'fail' ? '✕' : level}</span>
+      <span className="font-semibold">
+        {level === "fail" ? (
+          <>
+            <X size={12} aria-hidden />
+            <span className="sr-only">Fails normal text AA</span>
+          </>
+        ) : (
+          level
+        )}
+      </span>
     </span>
   );
 }

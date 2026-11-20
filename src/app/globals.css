@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
 }
 
 body {
@@ -20,4 +20,41 @@ body {
 ::-webkit-scrollbar-thumb {
   background: #404040;
   border-radius: 3px;
+}
+
+button,
+select,
+input[type="text"] {
+  min-height: 44px;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: default;
+}
+button[aria-label^="Copy"] {
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+:focus-visible {
+  outline: 2px solid #a8b8db;
+  outline-offset: 3px;
+}
+pre {
+  max-width: 100%;
+}
+main,
+section {
+  min-width: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

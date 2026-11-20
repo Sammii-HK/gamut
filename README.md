@@ -39,3 +39,9 @@ npm run dev
 ## Licence
 
 MIT
+
+## Editing and export integrity
+
+Scale IDs stay fixed when names change. Semantic preview and export colours follow those IDs. Export keys are normalised and made unique, so duplicate display labels remain separate scales. New shared URLs retain IDs, editable names and active selection; older links remain readable. Invalid shared colours are rejected before palette generation.
+
+`npm test` covers rename/export and shared-state regressions. `npm run test:icons`, `npm run lint`, `npm run typecheck` and `npm run build` provide the local release checks. Tests use Node 24's native TypeScript support. See [the verification record](docs/quality/gamut-verification-20261120.md) for evidence and limitations.

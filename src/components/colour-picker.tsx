@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { hexToOklch, oklchToHex, isValidHex, normaliseHex } from '@/lib/colour';
-import type { OklchColour } from '@/types';
+import { useState, useEffect } from "react";
+import { hexToOklch, oklchToHex, isValidHex, normaliseHex } from "@/lib/colour";
+import type { OklchColour } from "@/types";
 
 interface ColourPickerProps {
   value: string;
@@ -12,7 +12,9 @@ interface ColourPickerProps {
 export function ColourPicker({ value, onChange }: ColourPickerProps) {
   const [hexInput, setHexInput] = useState(value);
   const [oklch, setOklch] = useState<OklchColour>(() => hexToOklch(value));
-  const [activeTab, setActiveTab] = useState<'picker' | 'hex' | 'oklch'>('picker');
+  const [activeTab, setActiveTab] = useState<"picker" | "hex" | "oklch">(
+    "picker",
+  );
 
   useEffect(() => {
     setHexInput(value);
@@ -21,7 +23,7 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
 
   const handleHexChange = (raw: string) => {
     setHexInput(raw);
-    const clean = raw.startsWith('#') ? raw : `#${raw}`;
+    const clean = raw.startsWith("#") ? raw : `#${raw}`;
     if (isValidHex(clean)) {
       onChange(normaliseHex(clean));
     }
@@ -35,9 +37,9 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
   };
 
   const tabs = [
-    { id: 'picker' as const, label: 'Picker' },
-    { id: 'hex' as const, label: 'Hex' },
-    { id: 'oklch' as const, label: 'OKLCH' },
+    { id: "picker" as const, label: "Picker" },
+    { id: "hex" as const, label: "Hex" },
+    { id: "oklch" as const, label: "OKLCH" },
   ];
 
   return (
@@ -46,11 +48,12 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
         {tabs.map((tab) => (
           <button
             key={tab.id}
+            aria-pressed={activeTab === tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
               activeTab === tab.id
-                ? 'bg-neutral-700 text-white'
-                : 'text-neutral-400 hover:text-neutral-200'
+                ? "bg-neutral-700 text-white"
+                : "text-neutral-400 hover:text-neutral-200"
             }`}
           >
             {tab.label}
@@ -58,10 +61,11 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
         ))}
       </div>
 
-      {activeTab === 'picker' && (
+      {activeTab === "picker" && (
         <div className="flex flex-col items-center gap-3">
           <input
             type="color"
+            aria-label="Base colour"
             value={value}
             onChange={(e) => onChange(e.target.value)}
             className="w-full h-32 rounded-lg cursor-pointer border border-neutral-700 bg-transparent [&::-webkit-color-swatch-wrapper]:p-1 [&::-webkit-color-swatch]:rounded-md [&::-webkit-color-swatch]:border-none"
@@ -70,9 +74,11 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
         </div>
       )}
 
-      {activeTab === 'hex' && (
+      {activeTab === "hex" && (
         <div className="space-y-2">
-          <label className="text-xs text-neutral-400">Hex colour</label>
+          <label htmlFor="base-hex" className="text-xs text-neutral-400">
+            Hex colour
+          </label>
           <div className="flex gap-2 items-center">
             <div
               className="w-10 h-10 rounded-lg border border-neutral-700 flex-shrink-0"
@@ -80,17 +86,18 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
             />
             <input
               type="text"
+              id="base-hex"
               value={hexInput}
               onChange={(e) => handleHexChange(e.target.value)}
               placeholder="#3b82f6"
-              className="flex-1 bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2 text-sm font-mono text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-600"
+              className="min-w-0 flex-1 bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2 text-sm font-mono text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-600"
               maxLength={7}
             />
           </div>
         </div>
       )}
 
-      {activeTab === 'oklch' && (
+      {activeTab === "oklch" && (
         <div className="space-y-3">
           <SliderInput
             label="L (lightness)"
@@ -99,7 +106,7 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
             max={1}
             step={0.01}
             format={(v) => v.toFixed(2)}
-            onChange={(v) => handleOklchChange('l', v)}
+            onChange={(v) => handleOklchChange("l", v)}
           />
           <SliderInput
             label="C (chroma)"
@@ -108,7 +115,7 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
             max={0.4}
             step={0.005}
             format={(v) => v.toFixed(3)}
-            onChange={(v) => handleOklchChange('c', v)}
+            onChange={(v) => handleOklchChange("c", v)}
           />
           <SliderInput
             label="H (hue)"
@@ -117,7 +124,7 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
             max={360}
             step={1}
             format={(v) => `${Math.round(v)}°`}
-            onChange={(v) => handleOklchChange('h', v)}
+            onChange={(v) => handleOklchChange("h", v)}
           />
           <div
             className="w-full h-8 rounded-lg border border-neutral-700"
@@ -154,6 +161,7 @@ function SliderInput({
       </div>
       <input
         type="range"
+        aria-label={label}
         min={min}
         max={max}
         step={step}

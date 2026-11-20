@@ -1,21 +1,10 @@
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
-import './globals.css';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'Gamut — OKLCH Theme Builder',
+  title: "Gamut — OKLCH Theme Builder",
   description:
-    'Real-time theme builder with OKLCH colour science, WCAG contrast checking, and exportable design tokens.',
+    "Real-time theme builder with OKLCH colour science, WCAG contrast checking, and exportable design tokens.",
 };
 
 export default function RootLayout({
@@ -24,16 +13,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en-GB" className="dark">
       <head>
         <meta name="darkreader-lock" />
         <meta name="color-scheme" content="dark" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-950 text-white`}
-      >
-        {children}
-      </body>
+      <body className="antialiased bg-neutral-950 text-white">{children}</body>
     </html>
   );
 }
