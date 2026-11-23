@@ -31,7 +31,7 @@ export function CopyButton({ text, className, size = 14 }: CopyButtonProps) {
     <button
       onClick={handleCopy}
       className={cn(
-        "text-neutral-400 hover:text-white transition-colors",
+        "text-ink-muted hover:text-ink transition-colors",
         className,
       )}
       aria-label={

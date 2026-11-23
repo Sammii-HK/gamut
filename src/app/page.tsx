@@ -119,20 +119,20 @@ export default function Home() {
       <div className="max-w-6xl mx-auto px-4 py-8 sm:py-12">
         <div className="flex items-start justify-between gap-5 mb-10">
           <div>
-            <p className="text-[10px] uppercase tracking-[.25em] text-neutral-500 mb-3">
+            <p className="text-[10px] uppercase tracking-[.25em] text-ink-faint mb-3">
               The colour workshop
             </p>
             <h1 className="text-4xl font-semibold tracking-tight flex items-center gap-3">
               <Palette size={30} aria-hidden />
               Gamut
             </h1>
-            <p className="text-sm text-neutral-400 mt-1">
+            <p className="text-sm text-ink-muted mt-1">
               Shape a palette. Try it in context. Take the tokens with you.
             </p>
           </div>
           <button
             onClick={handleShare}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-800 border border-neutral-700 text-xs text-neutral-300 hover:bg-neutral-700 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-control border border-line-strong text-xs text-ink-soft hover:bg-control-hover transition-colors"
           >
             <Share2 size={15} aria-hidden />
             {shared ? "Copied!" : "Share"}
@@ -141,27 +141,27 @@ export default function Home() {
 
         <nav
           aria-label="Workspace sections"
-          className="flex flex-wrap gap-x-6 border-y border-neutral-800 mb-8 text-xs text-neutral-400"
+          className="flex flex-wrap gap-x-6 border-y border-line mb-8 text-xs text-ink-muted"
         >
           {["scales", "palette", "preview", "export"].map((section) => (
             <a
               key={section}
               href={`#${section}`}
-              className="min-h-11 inline-flex items-center capitalize hover:text-white"
+              className="min-h-11 inline-flex items-center capitalize hover:text-ink"
             >
               {section}
             </a>
           ))}
         </nav>
         {shareError && (
-          <p role="alert" className="text-sm text-rose-300 mb-6">
+          <p role="alert" className="text-sm text-rose-300 light:text-rose-700 mb-6">
             {shareError}
           </p>
         )}
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
           {/* Sidebar */}
           <aside
-            className="space-y-6 rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4 h-fit"
+            className="space-y-6 rounded-2xl border border-line bg-panel/40 p-4 h-fit"
             aria-label="Palette controls"
           >
             <ColourPicker
@@ -179,8 +179,8 @@ export default function Home() {
               onRoleChange={handleRoleChange}
             />
 
-            <details className="contrast-details border-t border-neutral-800 pt-3">
-              <summary className="flex min-h-11 items-center justify-between text-xs text-neutral-400 cursor-pointer">
+            <details className="contrast-details border-t border-line pt-3">
+              <summary className="flex min-h-11 items-center justify-between text-xs text-ink-muted cursor-pointer">
                 Check contrast ratios
                 <ChevronDown size={15} aria-hidden />
               </summary>
@@ -205,7 +205,7 @@ export default function Home() {
           </div>
         </div>
 
-        <footer className="mt-16 pt-6 border-t border-neutral-800 text-center text-xs text-neutral-500">
+        <footer className="mt-16 pt-6 border-t border-line text-center text-xs text-ink-faint">
           OKLCH scales, WCAG contrast ratios and portable theme tokens. All
           editing stays in your browser.
         </footer>

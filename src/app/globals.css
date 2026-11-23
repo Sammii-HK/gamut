@@ -1,12 +1,84 @@
 @import "tailwindcss";
 
+@custom-variant light (@media (prefers-color-scheme: light));
+
 @theme inline {
   --font-sans: ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, monospace;
+
+  /* Page chrome. The palette preview sets its own variables inline. */
+  --color-canvas: var(--g-canvas);
+  --color-panel: var(--g-panel);
+  --color-control: var(--g-control);
+  --color-control-hover: var(--g-control-hover);
+  --color-wash: var(--g-wash);
+  --color-segment-active: var(--g-segment-active);
+  --color-track: var(--g-track);
+  --color-thumb: var(--g-thumb);
+  --color-thumb-ring: var(--g-thumb-ring);
+  --color-line: var(--g-line);
+  --color-line-strong: var(--g-line-strong);
+  --color-line-bold: var(--g-line-bold);
+  --color-ink: var(--g-ink);
+  --color-ink-strong: var(--g-ink-strong);
+  --color-ink-soft: var(--g-ink-soft);
+  --color-ink-muted: var(--g-ink-muted);
+  --color-ink-faint: var(--g-ink-faint);
+}
+
+/* Dark: the original workshop, value for value. */
+:root {
+  color-scheme: light dark;
+  --g-canvas: oklch(14.5% 0 0);
+  --g-panel: oklch(20.5% 0 0);
+  --g-control: oklch(26.9% 0 0);
+  --g-control-hover: oklch(37.1% 0 0);
+  --g-wash: oklch(26.9% 0 0);
+  --g-segment-active: oklch(37.1% 0 0);
+  --g-track: oklch(37.1% 0 0);
+  --g-thumb: #fff;
+  --g-thumb-ring: oklch(43.9% 0 0);
+  --g-line: oklch(26.9% 0 0);
+  --g-line-strong: oklch(37.1% 0 0);
+  --g-line-bold: oklch(43.9% 0 0);
+  --g-ink: #fff;
+  --g-ink-strong: oklch(92.2% 0 0);
+  --g-ink-soft: oklch(87% 0 0);
+  --g-ink-muted: oklch(70.8% 0 0);
+  --g-ink-faint: oklch(55.6% 0 0);
+  --g-focus: #a8b8db;
+  --g-scrollbar: #404040;
+}
+
+/* Light: the same bench by daylight. Neutral paper so the palette reads true. */
+@media (prefers-color-scheme: light) {
+  :root {
+    --g-canvas: oklch(98.2% 0 0);
+    --g-panel: oklch(100% 0 0);
+    --g-control: oklch(100% 0 0);
+    --g-control-hover: oklch(95.5% 0 0);
+    --g-wash: oklch(89% 0 0);
+    --g-segment-active: oklch(100% 0 0);
+    --g-track: oklch(88% 0 0);
+    --g-thumb: oklch(26.9% 0 0);
+    --g-thumb-ring: oklch(100% 0 0);
+    --g-line: oklch(90.5% 0 0);
+    --g-line-strong: oklch(64% 0 0);
+    --g-line-bold: oklch(58% 0 0);
+    --g-ink: oklch(20.5% 0 0);
+    --g-ink-strong: oklch(26.9% 0 0);
+    --g-ink-soft: oklch(33% 0 0);
+    --g-ink-muted: oklch(44% 0 0);
+    --g-ink-faint: oklch(51% 0 0);
+    --g-focus: oklch(50% 0.09 265);
+    --g-scrollbar: oklch(78% 0 0);
+  }
 }
 
 body {
   font-family: var(--font-sans), system-ui, sans-serif;
+  background-color: var(--g-canvas);
+  color: var(--g-ink);
 }
 
 /* Scrollbar */
@@ -18,7 +90,7 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #404040;
+  background: var(--g-scrollbar);
   border-radius: 3px;
 }
 
@@ -40,7 +112,7 @@ button[aria-label^="Copy"] {
   justify-content: center;
 }
 :focus-visible {
-  outline: 2px solid #a8b8db;
+  outline: 2px solid var(--g-focus);
   outline-offset: 3px;
 }
 pre {

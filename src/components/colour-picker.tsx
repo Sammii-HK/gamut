@@ -44,7 +44,7 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex gap-1 bg-neutral-800/50 rounded-lg p-1">
+      <div className="flex gap-1 bg-wash/50 rounded-lg p-1">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -52,8 +52,8 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
             onClick={() => setActiveTab(tab.id)}
             className={`flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
               activeTab === tab.id
-                ? "bg-neutral-700 text-white"
-                : "text-neutral-400 hover:text-neutral-200"
+                ? "bg-segment-active text-ink"
+                : "text-ink-muted hover:text-ink-strong"
             }`}
           >
             {tab.label}
@@ -68,20 +68,20 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
             aria-label="Base colour"
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="w-full h-32 rounded-lg cursor-pointer border border-neutral-700 bg-transparent [&::-webkit-color-swatch-wrapper]:p-1 [&::-webkit-color-swatch]:rounded-md [&::-webkit-color-swatch]:border-none"
+            className="w-full h-32 rounded-lg cursor-pointer border border-line-strong bg-transparent [&::-webkit-color-swatch-wrapper]:p-1 [&::-webkit-color-swatch]:rounded-md [&::-webkit-color-swatch]:border-none"
           />
-          <span className="text-xs text-neutral-400 font-mono">{value}</span>
+          <span className="text-xs text-ink-muted font-mono">{value}</span>
         </div>
       )}
 
       {activeTab === "hex" && (
         <div className="space-y-2">
-          <label htmlFor="base-hex" className="text-xs text-neutral-400">
+          <label htmlFor="base-hex" className="text-xs text-ink-muted">
             Hex colour
           </label>
           <div className="flex gap-2 items-center">
             <div
-              className="w-10 h-10 rounded-lg border border-neutral-700 flex-shrink-0"
+              className="w-10 h-10 rounded-lg border border-line-strong flex-shrink-0"
               style={{ backgroundColor: value }}
             />
             <input
@@ -90,7 +90,7 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
               value={hexInput}
               onChange={(e) => handleHexChange(e.target.value)}
               placeholder="#3b82f6"
-              className="min-w-0 flex-1 bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2 text-sm font-mono text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-600"
+              className="min-w-0 flex-1 bg-control border border-line-strong rounded-lg px-3 py-2 text-sm font-mono text-ink placeholder:text-ink-faint focus:outline-none focus:ring-1 focus:ring-line-bold"
               maxLength={7}
             />
           </div>
@@ -127,7 +127,7 @@ export function ColourPicker({ value, onChange }: ColourPickerProps) {
             onChange={(v) => handleOklchChange("h", v)}
           />
           <div
-            className="w-full h-8 rounded-lg border border-neutral-700"
+            className="w-full h-8 rounded-lg border border-line-strong"
             style={{ backgroundColor: value }}
           />
         </div>
@@ -156,8 +156,8 @@ function SliderInput({
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
-        <span className="text-neutral-400">{label}</span>
-        <span className="text-neutral-300 font-mono">{format(value)}</span>
+        <span className="text-ink-muted">{label}</span>
+        <span className="text-ink-soft font-mono">{format(value)}</span>
       </div>
       <input
         type="range"
@@ -167,7 +167,7 @@ function SliderInput({
         step={step}
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="w-full accent-white h-1.5 bg-neutral-700 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-neutral-600"
+        className="w-full accent-thumb h-1.5 bg-track rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-thumb [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-thumb-ring"
       />
     </div>
   );

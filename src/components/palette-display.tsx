@@ -11,8 +11,8 @@ export function PaletteDisplay({ palette }: PaletteDisplayProps) {
   return (
     <section id="palette" className="space-y-3 scroll-mt-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-neutral-300">Palette</h2>
-        <span className="text-xs text-neutral-500 font-mono">
+        <h2 className="text-sm font-medium text-ink-soft">Palette</h2>
+        <span className="text-xs text-ink-faint font-mono">
           {palette.name}
         </span>
       </div>
@@ -21,15 +21,15 @@ export function PaletteDisplay({ palette }: PaletteDisplayProps) {
         {palette.steps.map((step) => (
           <div key={step.step} className="flex flex-col items-center gap-1.5">
             <div
-              className="w-full aspect-[3/4] rounded-lg border border-neutral-700/50 transition-transform hover:scale-110 shadow-sm"
+              className="w-full aspect-[3/4] rounded-lg border border-line-strong/50 transition-transform hover:scale-110 shadow-sm"
               style={{ backgroundColor: step.hex }}
               title={`${step.step}: ${step.hex}`}
             />
-            <span className="text-[10px] text-neutral-500 font-medium">
+            <span className="text-[10px] text-ink-faint font-medium">
               {step.step}
             </span>
             <div className="flex flex-wrap justify-center items-center gap-0.5">
-              <span className="text-[10px] text-neutral-400 font-mono">
+              <span className="text-[10px] text-ink-muted font-mono">
                 {step.hex}
               </span>
               <CopyButton text={step.hex} size={10} />

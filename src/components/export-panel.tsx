@@ -30,8 +30,8 @@ export function ExportPanel({ palettes, tokens, mode }: ExportPanelProps) {
   return (
     <section id="export" className="space-y-3 scroll-mt-6">
       <div className="flex items-start justify-between flex-wrap gap-3">
-        <h2 className="text-sm font-medium text-neutral-300">Export</h2>
-        <div className="flex flex-wrap gap-1 bg-neutral-800/50 rounded-lg p-1">
+        <h2 className="text-sm font-medium text-ink-soft">Export</h2>
+        <div className="flex flex-wrap gap-1 bg-wash/50 rounded-lg p-1">
           {formats.map((f) => (
             <button
               key={f.id}
@@ -39,8 +39,8 @@ export function ExportPanel({ palettes, tokens, mode }: ExportPanelProps) {
               onClick={() => setFormat(f.id)}
               className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-colors ${
                 format === f.id
-                  ? "bg-neutral-700 text-white"
-                  : "text-neutral-400 hover:text-neutral-200"
+                  ? "bg-segment-active text-ink"
+                  : "text-ink-muted hover:text-ink-strong"
               }`}
             >
               {f.label}
@@ -49,12 +49,12 @@ export function ExportPanel({ palettes, tokens, mode }: ExportPanelProps) {
         </div>
       </div>
 
-      <p className="text-xs text-neutral-500">
+      <p className="text-xs text-ink-faint">
         Names become unique export keys. Semantic colours follow each scale even
         when you rename it.
       </p>
       <div className="relative">
-        <pre className="bg-neutral-900 border border-neutral-800 rounded-lg p-4 text-xs font-mono text-neutral-300 overflow-x-auto max-h-80">
+        <pre className="bg-panel border border-line rounded-lg p-4 text-xs font-mono text-ink-soft overflow-x-auto max-h-80">
           {output}
         </pre>
         <div className="absolute top-2 right-2">

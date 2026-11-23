@@ -13,12 +13,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-GB" className="dark">
+    <html lang="en-GB">
       <head>
         <meta name="darkreader-lock" />
-        <meta name="color-scheme" content="dark" />
+        <meta name="color-scheme" content="light dark" />
       </head>
-      <body className="antialiased bg-neutral-950 text-white">{children}</body>
+      <body className="antialiased bg-canvas text-ink">{children}</body>
     </html>
   );
 }

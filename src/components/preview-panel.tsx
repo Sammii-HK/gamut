@@ -36,12 +36,12 @@ export function PreviewPanel({
   return (
     <section id="preview" className="space-y-3 scroll-mt-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-neutral-300">Preview</h2>
+        <h2 className="text-sm font-medium text-ink-soft">Preview</h2>
         <ModeToggle mode={mode} onChange={onModeChange} />
       </div>
 
       <div
-        className="rounded-xl border border-neutral-800 p-6 space-y-6 transition-colors duration-300"
+        className="rounded-xl border border-line p-6 space-y-6 transition-colors duration-300"
         style={{
           ...scaleVars,
           ...resolved,

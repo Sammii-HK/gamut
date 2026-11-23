@@ -13,19 +13,19 @@ export function ContrastGrid({ palette }: ContrastGridProps) {
 
   return (
     <div className="space-y-3">
-      <h2 className="text-sm font-medium text-neutral-300">Contrast ratios</h2>
+      <h2 className="text-sm font-medium text-ink-soft">Contrast ratios</h2>
 
       <div className="overflow-x-auto">
         <table className="w-full text-xs">
           <thead>
-            <tr className="border-b border-neutral-800">
-              <th className="text-left py-2 pr-3 text-neutral-500 font-medium">
+            <tr className="border-b border-line">
+              <th className="text-left py-2 pr-3 text-ink-faint font-medium">
                 Step
               </th>
-              <th className="py-2 px-3 text-neutral-500 font-medium">
+              <th className="py-2 px-3 text-ink-faint font-medium">
                 vs white
               </th>
-              <th className="py-2 px-3 text-neutral-500 font-medium">
+              <th className="py-2 px-3 text-ink-faint font-medium">
                 vs black
               </th>
             </tr>
@@ -38,14 +38,14 @@ export function ContrastGrid({ palette }: ContrastGridProps) {
               const levelBlack = wcagLevel(ratioBlack);
 
               return (
-                <tr key={step.step} className="border-b border-neutral-800/50">
+                <tr key={step.step} className="border-b border-line/50">
                   <td className="py-1.5 pr-3">
                     <div className="flex items-center gap-2">
                       <div
                         className="w-4 h-4 rounded-sm flex-shrink-0"
                         style={{ backgroundColor: step.hex }}
                       />
-                      <span className="text-neutral-400 font-mono">
+                      <span className="text-ink-muted font-mono">
                         {step.step}
                       </span>
                     </div>
@@ -68,9 +68,9 @@ export function ContrastGrid({ palette }: ContrastGridProps) {
 
 function ContrastBadge({ ratio, level }: { ratio: number; level: string }) {
   const colours = {
-    AAA: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-    AA: "bg-amber-500/15 text-amber-400 border-amber-500/30",
-    fail: "bg-red-500/10 text-red-400/60 border-red-500/20",
+    AAA: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30 light:text-emerald-800 light:border-emerald-600/40",
+    AA: "bg-amber-500/15 text-amber-400 border-amber-500/30 light:text-amber-800 light:border-amber-600/40",
+    fail: "bg-red-500/10 text-red-400/60 border-red-500/20 light:text-red-700 light:border-red-600/30",
   };
 
   return (
