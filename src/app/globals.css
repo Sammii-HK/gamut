@@ -39,13 +39,13 @@
   --g-thumb: #fff;
   --g-thumb-ring: oklch(43.9% 0 0);
   --g-line: oklch(26.9% 0 0);
-  --g-line-strong: oklch(37.1% 0 0);
-  --g-line-bold: oklch(43.9% 0 0);
+  --g-line-strong: oklch(52% 0 0);
+  --g-line-bold: oklch(58% 0 0);
   --g-ink: #fff;
   --g-ink-strong: oklch(92.2% 0 0);
   --g-ink-soft: oklch(87% 0 0);
   --g-ink-muted: oklch(70.8% 0 0);
-  --g-ink-faint: oklch(55.6% 0 0);
+  --g-ink-faint: oklch(64.5% 0 0);
   --g-focus: #a8b8db;
   --g-scrollbar: #404040;
 }
